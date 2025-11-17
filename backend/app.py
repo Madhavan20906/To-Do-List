@@ -1,6 +1,7 @@
+# backend/app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
@@ -11,114 +12,83 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///database.db")
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Use SQLAlchemy 1.4 style engine
+engine = create_engine(DATABASE_URL, future=True)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 Base = declarative_base()
 
-
-# ---------------------
-# Database Model
-# ---------------------
 class Task(Base):
     __tablename__ = "tasks"
-
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    description = Column(String)
-    due_date = Column(String)
+    description = Column(String, nullable=True)
+    due_date = Column(String, nullable=True)
     done = Column(Boolean, default=False)
-
 
 Base.metadata.create_all(bind=engine)
 
-
-# ---------------------
-# Helper: DB Session
-# ---------------------
 def get_db():
     db = SessionLocal()
     try:
-        return db
+        yield db
     finally:
         db.close()
 
-
-# ---------------------
-# ROUTES
-# ---------------------
-
-@app.get("/tasks")
+# --- Routes
+@app.get("/api/tasks")
 def get_tasks():
-    db = get_db()
-    tasks = db.query(Task).all()
+    db = SessionLocal()
+    try:
+        tasks = db.query(Task).order_by(Task.id.desc()).all()
+        return jsonify([{"id": t.id, "title": t.title, "description": t.description, "due_date": t.due_date, "done": t.done} for t in tasks])
+    finally:
+        db.close()
 
-    return jsonify([
-        {
-            "id": t.id,
-            "title": t.title,
-            "description": t.description,
-            "due_date": t.due_date,
-            "done": t.done
-        } for t in tasks
-    ])
-
-
-@app.post("/tasks")
+@app.post("/api/tasks")
 def add_task():
-    db = get_db()
-    data = request.json
-
+    db = SessionLocal()
+    data = request.get_json()
     new_task = Task(
-        title=data["title"],
-        description=data.get("description", ""),
-        due_date=data.get("due_date", ""),
-        done=data.get("done", False)
+        title = data.get("title", ""),
+        description = data.get("description", ""),
+        due_date = data.get("due_date", ""),
+        done = bool(data.get("done", False))
     )
-
     db.add(new_task)
     db.commit()
     db.refresh(new_task)
+    db.close()
+    return jsonify({"message":"Task added","id": new_task.id}), 201
 
-    return jsonify({"message": "Task added", "id": new_task.id})
-
-
-@app.put("/tasks/<int:id>")
+@app.put("/api/tasks/<int:id>")
 def update_task(id):
-    db = get_db()
-    task = db.query(Task).filter(Task.id == id).first()
-
+    db = SessionLocal()
+    task = db.query(Task).filter(Task.id==id).first()
     if not task:
-        return jsonify({"error": "Task not found"}), 404
-
-    data = request.json
-
+        db.close()
+        return jsonify({"error":"not found"}), 404
+    data = request.get_json()
     task.title = data.get("title", task.title)
     task.description = data.get("description", task.description)
     task.due_date = data.get("due_date", task.due_date)
-    task.done = data.get("done", task.done)
-
+    task.done = bool(data.get("done", task.done))
     db.commit()
-    return jsonify({"message": "Task updated"})
+    db.close()
+    return jsonify({"message":"updated"})
 
-
-@app.delete("/tasks/<int:id>")
+@app.delete("/api/tasks/<int:id>")
 def delete_task(id):
-    db = get_db()
-    task = db.query(Task).filter(Task.id == id).first()
-
+    db = SessionLocal()
+    task = db.query(Task).filter(Task.id==id).first()
     if not task:
-        return jsonify({"error": "Task not found"}), 404
-
+        db.close()
+        return jsonify({"error":"not found"}), 404
     db.delete(task)
     db.commit()
-
-    return jsonify({"message": "Task deleted"})
-
-
-# ---------------------
-# RUN APP
-# ---------------------
+    db.close()
+    return jsonify({"message":"deleted"})
+    
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
