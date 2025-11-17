@@ -1,0 +1,275 @@
+/* ============================================================
+   🔥 NEXT-LEVEL FIRE BACKGROUND (LIGHT MODE)
+============================================================ */
+.container {
+  padding: 25px;
+  min-height: 100vh;
+
+  background: radial-gradient(circle at 20% 20%, rgba(78, 58, 255, 0.45), transparent 55%),
+              radial-gradient(circle at 85% 80%, rgba(0, 198, 255, 0.45), transparent 60%),
+              linear-gradient(135deg, #eef2ff, #f8fbff);
+
+  background-size: 200% 200%;
+  animation: fireFlow 10s infinite alternate ease-in-out;
+}
+
+/* 🔥 MOTION ANIMATION */
+@keyframes fireFlow {
+  0% { background-position: left top; }
+  100% { background-position: right bottom; }
+}
+
+/* ============================================================
+   🌙 DARK MODE — EVEN MORE FIRE
+============================================================ */
+.container.dark {
+  background: radial-gradient(circle at 25% 25%, rgba(255, 77, 166, 0.35), transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(79, 163, 255, 0.35), transparent 55%),
+              linear-gradient(135deg, #050406, #0f001a);
+
+  background-size: 220% 220%;
+  animation: fireDarkFlow 12s infinite alternate ease-in-out;
+}
+
+@keyframes fireDarkFlow {
+  0% { background-position: right bottom; }
+  100% { background-position: left top; }
+}
+
+
+/* ============================================================
+   NAVBAR
+============================================================ */
+.top-nav {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px);
+  padding: 15px 25px;
+  border-radius: 20px;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.container.dark .top-nav {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* LOGO */
+.logo {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #3d3df5;
+}
+
+.container.dark .logo {
+  color: #8fa2ff;
+}
+
+/* Search Bar */
+.search {
+  width: 40%;
+  padding: 14px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.85);
+  font-size: 15px;
+}
+
+.container.dark .search {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+/* Status boxes */
+.status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.status-box {
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+}
+
+.pending { background: rgba(255, 230, 110, 0.55); }
+.completed { background: rgba(110, 255, 150, 0.55); }
+
+.add-btn {
+  background: linear-gradient(135deg, #7b2ff7, #00c6ff);
+  color: white;
+  font-size: 22px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  transition: 0.25s;
+}
+
+.add-btn:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* ============================================================
+   TASK FORM (GLASS + NEON BORDER)
+============================================================ */
+.task-form {
+  width: 55%;
+  background: rgba(255,255,255,0.45);
+  border-radius: 25px;
+  padding: 25px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.5);
+  margin: 25px auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  animation: floatUp 0.5s ease forwards;
+}
+
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container.dark .task-form {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Input Fields */
+.task-form input,
+.task-form textarea {
+  background: rgba(255,255,255,0.9);
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.container.dark .task-form input,
+.container.dark .task-form textarea {
+  background: rgba(0,0,0,0.25);
+  color: white;
+}
+
+/* Save button */
+.save-btn {
+  background: linear-gradient(135deg, #ff6fd8, #ff9a44);
+  border: none;
+  padding: 14px;
+  color: white;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.save-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   TASK LIST
+============================================================ */
+.task-list {
+  margin-top: 30px;
+}
+
+/* TASK CARD - Neon + Glass */
+.task-card {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transition: 0.25s;
+  transform: translateY(0);
+}
+
+.container.dark .task-card {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.task-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+/* Title + Date Row */
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.task-top h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.strike {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.date {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Buttons */
+.task-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.task-btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.task-btn:hover {
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+}

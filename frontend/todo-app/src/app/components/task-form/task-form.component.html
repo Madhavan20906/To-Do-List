@@ -1,0 +1,36 @@
+<div class="form-container">
+
+  <!-- Title -->
+  <input
+    type="text"
+    placeholder="Task title"
+    [(ngModel)]="task.title"
+  />
+
+  <!-- Description -->
+  <textarea
+    placeholder="Description"
+    [(ngModel)]="task.description">
+  </textarea>
+
+  <!-- Date -->
+  <input
+    type="date"
+    [(ngModel)]="task.due_date"
+  />
+
+  <!-- Mark as done -->
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="task.done"
+    />
+    Mark as Done
+  </label>
+
+  <!-- Save Button -->
+  <button (click)="saveTask()">
+    Save Task
+  </button>
+
+</div>

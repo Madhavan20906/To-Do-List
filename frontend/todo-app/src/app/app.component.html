@@ -1,0 +1,55 @@
+<div class="container" [class.dark]="isDark">
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <div class="logo">📅 To-Do-List</div>
+
+    <input class="search" type="text" placeholder="Search tasks..." [(ngModel)]="search">
+
+    <div class="status">
+      <div class="status-box pending">⏳ {{ pendingCount }} Pending</div>
+      <div class="status-box completed">✅ {{ completedCount }} Completed</div>
+
+      <button class="add-btn" (click)="toggleForm()">＋</button>
+
+      <button class="theme-toggle" (click)="toggleTheme()">
+        {{ isDark ? "☀️" : "🌙" }}
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- TASK FORM -->
+  <div class="task-form" *ngIf="showForm">
+    <input [(ngModel)]="model.title" placeholder="Title" />
+    <textarea [(ngModel)]="model.description" placeholder="Description"></textarea>
+    <input type="date" [(ngModel)]="model.due_date" />
+
+    <label class="done-check">
+      <input type="checkbox" [(ngModel)]="model.done" /> Mark as Done
+    </label>
+
+    <button class="save-btn" (click)="saveTask()">Save Task</button>
+  </div>
+
+
+  <!-- TASK LIST -->
+  <div class="task-list">
+    <div class="task-card" *ngFor="let t of tasks">
+      <div class="task-top">
+        <h3 [class.strike]="t.done">{{ t.title }}</h3>
+        <span class="date">📅 {{ t.due_date }}</span>
+      </div>
+
+      <p>{{ t.description }}</p>
+
+      <div class="task-actions">
+        <button class="task-btn" (click)="toggleDone(t)">
+          {{ t.done ? "Undo" : "Done" }}
+        </button>
+        <button class="delete-btn" (click)="deleteTask(t.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>
