@@ -79,4 +79,55 @@ def add_task():
         session.close()
 
 
-@app.pu
+@app.put("/tasks/<int:task_id>")
+def update_task(task_id):
+    session = Session()
+    try:
+        task = session.query(Task).get(task_id)
+        if not task:
+            return jsonify({"error": "Task not found"}), 404
+
+        data = request.json
+        task.title = data["title"]
+        task.description = data["description"]
+        task.due_date = data["due_date"]
+        task.done = data["done"]
+
+        session.commit()
+        return jsonify({"message": "Task updated"})
+
+    except Exception as e:
+        session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        session.close()
+
+
+@app.delete("/tasks/<int:task_id>")
+def delete_task(task_id):
+    session = Session()
+    try:
+        task = session.query(Task).get(task_id)
+        if not task:
+            return jsonify({"error": "Task not found"}), 404
+
+        session.delete(task)
+        session.commit()
+        return jsonify({"message": "Task deleted"})
+
+    except Exception as e:
+        session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        session.close()
+
+
+@app.get("/")
+def home():
+    return "Task API is running with Neon PostgreSQL!"
+
+
+if __name__ == "__main__":
+    app.run()
