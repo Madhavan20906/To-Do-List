@@ -9,14 +9,13 @@ import { Task } from '../models/task.model';
 })
 export class TaskService {
 
-  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com/api/tasks';
+  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com/tasks';
   private tasks$ = new BehaviorSubject<Task[]>([]);
 
   constructor(private http: HttpClient) {
     this.loadTasks();
   }
 
-  // Load all tasks
   loadTasks() {
     this.http.get<Task[]>(this.apiUrl).subscribe(tasks => this.tasks$.next(tasks));
   }
