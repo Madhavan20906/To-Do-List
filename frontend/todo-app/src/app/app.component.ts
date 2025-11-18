@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
+  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';
+
   tasks: any[] = [];
   search = "";
   isDark = false;
@@ -22,23 +24,18 @@ export class AppComponent implements OnInit {
     done: false
   };
 
-  // 🔥 FIXED BACKEND URL
-  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';
-
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.load();
   }
 
-  // LOAD TASKS
   load() {
     this.http.get<any[]>(`${this.apiUrl}/tasks`).subscribe(res => {
       this.tasks = res;
     });
   }
 
-  // COUNTS
   get pendingCount() {
     return this.tasks.filter(t => !t.done).length;
   }
@@ -47,17 +44,14 @@ export class AppComponent implements OnInit {
     return this.tasks.filter(t => t.done).length;
   }
 
-  // THEME
   toggleTheme() {
     this.isDark = !this.isDark;
   }
 
-  // OPEN/CLOSE FORM
   toggleForm() {
     this.showForm = !this.showForm;
   }
 
-  // SAVE TASK
   saveTask() {
     this.http.post(`${this.apiUrl}/tasks`, this.model).subscribe(() => {
       this.showForm = false;
@@ -66,17 +60,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // MARK DONE / UNDO
   toggleDone(task: any) {
     task.done = !task.done;
-    this.http.put(`${this.apiUrl}/tasks/${task.id}`, task)
-      .subscribe(() => this.load());
+    this.http.put(`${this.apiUrl}/tasks/${task.id}`, task).subscribe(() => this.load());
   }
 
-  // DELETE TASK
   deleteTask(id: number) {
-    this.http.delete(`${this.apiUrl}/tasks/${id}`)
-      .subscribe(() => this.load());
+    this.http.delete(`${this.apiUrl}/tasks/${id}`).subscribe(() => this.load());
   }
-
 }
