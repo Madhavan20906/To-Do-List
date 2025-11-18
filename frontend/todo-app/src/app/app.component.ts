@@ -22,6 +22,9 @@ export class AppComponent implements OnInit {
     done: false
   };
 
+  // 🔥 FIXED BACKEND URL
+  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -30,7 +33,7 @@ export class AppComponent implements OnInit {
 
   // LOAD TASKS
   load() {
-    this.http.get<any[]>('/api/tasks').subscribe(res => {
+    this.http.get<any[]>(`${this.apiUrl}/tasks`).subscribe(res => {
       this.tasks = res;
     });
   }
@@ -56,7 +59,7 @@ export class AppComponent implements OnInit {
 
   // SAVE TASK
   saveTask() {
-    this.http.post('/api/tasks', this.model).subscribe(() => {
+    this.http.post(`${this.apiUrl}/tasks`, this.model).subscribe(() => {
       this.showForm = false;
       this.model = { title: "", description: "", due_date: "", done: false };
       this.load();
@@ -66,12 +69,14 @@ export class AppComponent implements OnInit {
   // MARK DONE / UNDO
   toggleDone(task: any) {
     task.done = !task.done;
-    this.http.put(`/api/tasks/${task.id}`, task).subscribe(() => this.load());
+    this.http.put(`${this.apiUrl}/tasks/${task.id}`, task)
+      .subscribe(() => this.load());
   }
 
   // DELETE TASK
   deleteTask(id: number) {
-    this.http.delete(`/api/tasks/${id}`).subscribe(() => this.load());
+    this.http.delete(`${this.apiUrl}/tasks/${id}`)
+      .subscribe(() => this.load());
   }
 
 }
