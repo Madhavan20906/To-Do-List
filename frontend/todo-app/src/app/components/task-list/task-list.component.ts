@@ -29,9 +29,9 @@ export class TaskListComponent implements OnInit {
   }
 
   toggleDone(task: Task) {
-    if (task.done) return;
+    if (task.is_done) return;
 
-    const updated = { ...task, done: true };
+    const updated = { ...task, is_done: true };
 
     this.svc.updateTask(updated).subscribe(() => this.load());
   }
@@ -60,7 +60,8 @@ export class TaskListComponent implements OnInit {
     const newTask = {
       title: this.lastDeletedTask.title,
       description: this.lastDeletedTask.description,
-      done: this.lastDeletedTask.done
+      due_date: this.lastDeletedTask.due_date,
+      is_done: this.lastDeletedTask.is_done
     };
 
     this.svc.addTask(newTask).subscribe(() => {

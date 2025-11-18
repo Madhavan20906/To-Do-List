@@ -9,7 +9,7 @@ import { Task } from '../models/task.model';
 })
 export class TaskService {
 
-  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com/tasks';
+  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';
   private tasks$ = new BehaviorSubject<Task[]>([]);
 
   constructor(private http: HttpClient) {
@@ -17,7 +17,8 @@ export class TaskService {
   }
 
   loadTasks() {
-    this.http.get<Task[]>(this.apiUrl).subscribe(tasks => this.tasks$.next(tasks));
+    this.http.get<Task[]>(`${this.apiUrl}/tasks`)
+      .subscribe(tasks => this.tasks$.next(tasks));
   }
 
   getTasks(): Observable<Task[]> {
@@ -25,19 +26,19 @@ export class TaskService {
   }
 
   addTask(task: Task) {
-    return this.http.post<Task>(this.apiUrl, task).pipe(
+    return this.http.post<Task>(`${this.apiUrl}/tasks`, task).pipe(
       tap(() => this.loadTasks())
     );
   }
 
   updateTask(task: Task) {
-    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task).pipe(
+    return this.http.put<Task>(`${this.apiUrl}/tasks/${task.id}`, task).pipe(
       tap(() => this.loadTasks())
     );
   }
 
   deleteTask(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete(`${this.apiUrl}/tasks/${id}`).pipe(
       tap(() => this.loadTasks())
     );
   }
