@@ -9,7 +9,8 @@ import { Task } from '../models/task.model';
 })
 export class TaskService {
 
-  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';
+  private apiUrl = 'https://to-do-list-backend-22oz.onrender.com';  // NO /api
+
   private tasks$ = new BehaviorSubject<Task[]>([]);
 
   constructor(private http: HttpClient) {

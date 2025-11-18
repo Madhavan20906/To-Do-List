@@ -29,9 +29,12 @@ export class TaskListComponent implements OnInit {
   }
 
   toggleDone(task: Task) {
-    if (task.is_done) return;
+    if (task.done) return;        // FIXED
 
-    const updated = { ...task, is_done: true };
+    const updated = { 
+      ...task, 
+      done: true                     // FIXED – backend expects "done"
+    };
 
     this.svc.updateTask(updated).subscribe(() => this.load());
   }
@@ -61,7 +64,7 @@ export class TaskListComponent implements OnInit {
       title: this.lastDeletedTask.title,
       description: this.lastDeletedTask.description,
       due_date: this.lastDeletedTask.due_date,
-      is_done: this.lastDeletedTask.is_done
+      done: this.lastDeletedTask.done   // FIXED
     };
 
     this.svc.addTask(newTask).subscribe(() => {

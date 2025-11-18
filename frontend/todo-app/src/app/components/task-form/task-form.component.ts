@@ -16,7 +16,7 @@ export class TaskFormComponent {
     title: '',
     description: '',
     due_date: '',
-    is_done: false
+    done: false
   };
 
   constructor(private svc: TaskService) {}
@@ -31,7 +31,7 @@ export class TaskFormComponent {
       title: this.task.title,
       description: this.task.description,
       due_date: this.task.due_date,
-      is_done: this.task.is_done
+      done: this.task.done
     };
 
     this.svc.addTask(newTask).subscribe(() => {
@@ -41,7 +41,7 @@ export class TaskFormComponent {
         title: '',
         description: '',
         due_date: '',
-        is_done: false
+        done: false
       };
     });
   }

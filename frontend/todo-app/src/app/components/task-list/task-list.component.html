@@ -6,7 +6,7 @@
        (mouseleave)="hoveredTask = null">
 
     <div class="task-header">
-      <h3 [class.done]="task.is_done">{{ task.title }}</h3>
+      <h3 [class.done]="task.done">{{ task.title }}</h3>
       <small *ngIf="task.due_date">📅 {{ task.due_date }}</small>
     </div>
 
@@ -14,13 +14,13 @@
 
     <div class="task-actions" [class.show]="hoveredTask === task.id">
 
-      <button *ngIf="!task.is_done"
+      <button *ngIf="!task.done"
               class="done-btn"
               (click)="toggleDone(task)">
         Done
       </button>
 
-      <button *ngIf="!task.is_done"
+      <button *ngIf="!task.done"
               class="edit-btn"
               (click)="edit(task)">
         Edit
