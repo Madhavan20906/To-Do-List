@@ -16,7 +16,7 @@ export class TaskFormComponent {
     title: '',
     description: '',
     due_date: '',
-    done: false
+    is_done: false   // ✔ correct field
   };
 
   constructor(private svc: TaskService) {}
@@ -27,11 +27,12 @@ export class TaskFormComponent {
       return;
     }
 
+    // ✔ changed done → is_done
     const newTask = {
       title: this.task.title,
       description: this.task.description,
       due_date: this.task.due_date,
-      done: this.task.done
+      is_done: this.task.is_done
     };
 
     this.svc.addTask(newTask).subscribe(() => {
@@ -42,7 +43,7 @@ export class TaskFormComponent {
         title: '',
         description: '',
         due_date: '',
-        done: false
+        is_done: false
       };
     });
   }
